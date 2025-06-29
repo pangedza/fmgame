@@ -4,11 +4,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
+  try {
+    await dotenv.load();
+  } catch (e) {
+    debugPrint('Could not load .env: $e');
+  }
+  final url = dotenv.env['SUPABASE_URL'] ??
+      'https://xhbuzgwkgwbparyajauu.supabase.co';
+  final key = dotenv.env['SUPABASE_ANON_KEY'] ??
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoYnV6Z3drZ3dicGFyeWFqYXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMDYxMjQsImV4cCI6MjA2Njc4MjEyNH0.VDeE4kRbgFo8vvkws33ZTJOFuN1HhBI8lsB5u2pOg9E';
+  await Supabase.initialize(url: url, anonKey: key);
   runApp(const MyApp());
 }
 
