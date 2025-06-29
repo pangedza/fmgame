@@ -75,6 +75,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> _checkConnection() async {
+    try {
+      final result = await Supabase.instance.client
+          .from('test_items')
+          .select()
+          .limit(1);
+      print(result);
+    } catch (e) {
+      print('Ошибка при подключении к Supabase: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -116,6 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _checkConnection,
+              child: const Text('Проверить подключение'),
             ),
           ],
         ),
